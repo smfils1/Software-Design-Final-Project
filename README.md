@@ -1,2 +1,2 @@
 # Software-Design-Final-Project
-Artificial Life Simulation
+Artificial Life Game
