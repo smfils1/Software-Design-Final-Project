@@ -1,0 +1,24 @@
+The Project is in MVC:
+    The GUI for the menu is in the Menu Class
+    The Controllers for the menu is in the MenuController Class
+    The GUI for the game is in the GameView Class
+    The Controllers for the game is in the GameController Class
+
+
+World has an 2 arraylists:
+    1)that stores an arraylist of Regions(world).
+    2)that stores movable Entities(movableEntities)
+
+    A Region contains the terrain type and the entity on it.
+    entities.txt ->  '_'= Empty/Null ,'A'=agent ,'b'=Bush ,'C'=Carnivore,'H'= Herbivore ,'B'=Base ,'R'= Rock ,'T'= Tree
+    terrain.txt -> ',' = Grass,'.' = Dirt/Dessert,'~' = Water
+
+    Carnivore = Random computed set of {Lion(L), Wolf(W)}
+    Herbivore = Random computed set of {Rabbit(r), Monkey(m)}
+
+All Creatures have Vision
+Vision -> 'x'= Not Available , and other characters are the same character from Entities.txt & Terrain.txt
+
+Console Implementation:
+The Console Code for the View & Controls are in the GameView class
+//TODO: Convert console code to JavaFX GameController & GameView GUI
