@@ -1,5 +1,9 @@
 package csc221.alg.model;
 
 public interface Movable {
-    void move(int x,int y);
+    boolean canMove(int x, int y);
+    void moveLeft();
+    void moveRight();
+    void moveUp();
+    void moveDown();
 }

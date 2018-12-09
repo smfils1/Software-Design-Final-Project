@@ -1,5 +1,7 @@
 package csc221.alg.model;
-//TODO: add Functions should should check limit
+
+
+//TODO: Add limits to adding items
 public class Backpack {
     private int limit;
     private int woodAmount;
@@ -13,7 +15,7 @@ public class Backpack {
         this(25,10,0,0,0,1,1);
     }
 
-    public Backpack(int limit, int woodAmount, int berryAmount, int steakAmount, int rockAmount, int spear, int flashlight) {
+    public Backpack(int limit, int woodAmount, int berryAmount, int steakAmount,int stoneAmount, int spear, int flashlight) {
 
         this.limit = limit;
         this.woodAmount = woodAmount;

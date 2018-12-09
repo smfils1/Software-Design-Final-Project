@@ -10,6 +10,7 @@ abstract public class Entity {
         this.yPosition = yPosition;
     }
 
+
     public int getXPosition() {
         return xPosition;
     }

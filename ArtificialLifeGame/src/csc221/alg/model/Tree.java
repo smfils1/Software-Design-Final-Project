@@ -3,9 +3,9 @@ package csc221.alg.model;
 public class Tree extends Entity {
     private int woodAmount;
 
-    public Tree(int xPosition, int yPosition, int woodAmount) {
+    public Tree(int xPosition, int yPosition) {
         super(xPosition, yPosition);
-        this.woodAmount = woodAmount;
+        this.woodAmount = 50;
     }
 
     public int getWoodAmount() {
