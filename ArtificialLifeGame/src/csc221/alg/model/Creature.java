@@ -3,6 +3,7 @@ package csc221.alg.model;
 import java.util.ArrayList;
 
 abstract public class Creature extends Entity implements Movable {
+    private final int MAX_HEALTH = 100;                                 // ADDED BY Brian
     private char size;
     private int health;
     private boolean visible;
@@ -28,43 +29,42 @@ abstract public class Creature extends Entity implements Movable {
     }
 
     @Override
+    //TODO: add move(int xOffset, int yOffset) method header to Movable interface then restore @Override above
     //TODO: update health
     //Moves creature if it can move
+    public void move(int xOffset, int yOffset) {                       // ADDED BY Brian
+        if (canMove(this.getXPosition() + xOffset, this.getYPosition() + yOffset)) {
+            this.setXPosition(getXPosition() + xOffset);
+            this.setYPosition(getYPosition() + yOffset);
+            updateVision(World.getInstance().getWorld());
+
+            if(this instanceof Agent) {updateHealth();}                 // ADDED BY Brian
+
+        }
+    }
+
+    @Override
+    //Moves creature if it can move                                     // REVISED BY Brian
     public void moveLeft() {
-        if (canMove(this.getXPosition()-1,this.getYPosition())) {
-            this.setXPosition(getXPosition() - 1);
-            updateVision(World.getInstance().getWorld());
-        }
+        move(-1, 0);
     }
 
     @Override
-    //TODO: update health
-    //Moves creature if it can move
+    //Moves creature if it can move                                     // REVISED BY Brian
     public void moveRight() {
-        if (canMove(this.getXPosition()+1,this.getYPosition())) {
-            this.setXPosition(getXPosition() + 1);
-            updateVision(World.getInstance().getWorld());
-        }
+        move(1, 0);
     }
 
     @Override
-    //TODO: update health
-    //Moves creature if it can move
+    //Moves creature if it can move                                     // REVISED BY Brian
     public void moveUp() {
-        if (canMove(this.getXPosition(),this.getYPosition()-1)) {
-            this.setYPosition(getYPosition() - 1);
-            updateVision(World.getInstance().getWorld());
-        }
+        move(0, -1);
     }
 
     @Override
-    //TODO: update health
-    //Moves creature if it can move
+    //Moves creature if it can move                                     // REVISED BY Brian
     public void moveDown() {
-        if (canMove(this.getXPosition(),this.getYPosition()+1)) {
-            this.setYPosition(getYPosition() + 1);
-            updateVision(World.getInstance().getWorld());
-        }
+        move(0, 1);
     }
 
     //Updates the creatures vision of the world w/ the current square radius view
@@ -116,6 +116,32 @@ abstract public class Creature extends Entity implements Movable {
         this.health = health;
     }
 
+    public void decreaseHealth(int healthPoints) {                      // ADDED BY Brian
+        if (healthPoints > this.health)
+            this.health = 0;
+        else
+            this.health -= healthPoints;
+    }
+
+    public void increaseHealth(int healthPoints) {                      // ADDED BY Brian
+        if (healthPoints > this.MAX_HEALTH - this.health)
+            this.health = this.MAX_HEALTH;
+        else
+            this.health += healthPoints;
+    }
+
+    public void updateHealth() {                                        // ADDED BY Brian
+        //Vision Center
+        int visionYCenter = (getVision().size() - 1) / 2;
+        int visionXCenter = (getVision().get(0).size() - 1) / 2;
+
+        char terrain = getVision().get(visionYCenter).get(visionXCenter).getTerrainType();  // Check terrain
+        if(terrain == '.' || terrain == '~')
+            decreaseHealth(2);      // Moving in Desert or Water decreases health by 2
+        else
+            decreaseHealth(1);      // Moving in Grass decreases health by 1
+    }
+
     public void setVisiblity(boolean bool) {
         this.visible = bool;
     }
@@ -137,5 +163,3 @@ abstract public class Creature extends Entity implements Movable {
     }
 
 }
-
-
