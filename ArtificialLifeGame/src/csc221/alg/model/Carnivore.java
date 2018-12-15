@@ -1,14 +1,13 @@
 package csc221.alg.model;
-//TODO:abstact
+
 abstract class Carnivore extends Creature {
 
-    //TODO: Should Carnivore be Large only?
     public Carnivore(int xPosition, int yPosition) {
-        super(xPosition, yPosition, 'L', 100, 2);
+        super(xPosition, yPosition, 'L', 100, 4);
     }
 
-    //TODO: Implement based on Carnivore's vision
     public void attack(){
+        //TODO: Implement based on Carnivore's vision
     }
 
     @Override
@@ -21,13 +20,12 @@ abstract class Carnivore extends Creature {
         int visionYCenter = (getVision().size() - 1) / 2;
         int visionXCenter = (getVision().get(0).size() - 1) / 2;
 
-        boolean rule1= getHealth() > 0;//Has health
-        boolean rule2= (getVision().get(visionYCenter + yDirection).get(visionXCenter + xDirection) != null);//Region exists
+        boolean rule1= getHealth() > 0; //Has health
+        boolean rule2= (getVision().get(visionYCenter + yDirection).get(visionXCenter + xDirection) != null); //Region exists
         if( rule1 && rule2){
             boolean rule3 = (getVision().get(visionYCenter + yDirection).get(visionXCenter + xDirection).getEntity() == null); //Region is empty
             boolean rule4= getVision().get(visionYCenter + yDirection).get(visionXCenter + xDirection).getTerrainType() ==','; //Region is Green
-            boolean rule5= getVision().get(visionYCenter + yDirection).get(visionXCenter + xDirection).getTerrainType() =='.'; //Region is Dirt
-
+            boolean rule5= getVision().get(visionYCenter + yDirection).get(visionXCenter + xDirection).getTerrainType() =='.'; //Region is Desert
             return rule3 && (rule4 || rule5);
         }
         return false;

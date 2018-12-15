@@ -14,5 +14,4 @@ public enum CHARACTER {
     public String getUrl(){
         return this.urlCharacter;
     }
-
 }

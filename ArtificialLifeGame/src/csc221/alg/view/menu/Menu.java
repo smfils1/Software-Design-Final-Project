@@ -84,10 +84,10 @@ public class Menu {
         ALGButton helpButton = new ALGButton("HELP");
         addMenuButton(helpButton);
         helpButton.setOnAction(event -> {
-            if (menuHandler != null) {
-                menuHandler.helpEvent();
-            }
-        }
+                    if (menuHandler != null) {
+                        menuHandler.helpEvent();
+                    }
+                }
         );
     }
 
@@ -95,10 +95,10 @@ public class Menu {
         ALGButton creditsButton = new ALGButton("CREDITS");
         addMenuButton(creditsButton);
         creditsButton.setOnAction(event -> {
-            if (menuHandler != null) {
-                menuHandler.creditsEvent();
-            }
-        }
+                    if (menuHandler != null) {
+                        menuHandler.creditsEvent();
+                    }
+                }
         );
     }
 
@@ -106,10 +106,10 @@ public class Menu {
         ALGButton exitButton = new ALGButton("EXIT");
         addMenuButton(exitButton);
         exitButton.setOnAction(event -> {
-            if (menuHandler != null) {
-                menuHandler.exitEvent();
-            }
-        }
+                    if (menuHandler != null) {
+                        menuHandler.exitEvent();
+                    }
+                }
         );
     }
 

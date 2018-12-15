@@ -7,9 +7,8 @@ import csc221.alg.view.menu.Menu;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-//TODO: find & use different characters png
-public class Game extends Application {
 
+public class Game extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Menu menu = new Menu();

@@ -1,11 +1,9 @@
 package csc221.alg.model;
 
-import csc221.alg.model.Creature;
-
 abstract public class Herbivore extends Creature {
 
     public Herbivore(int xPosition, int yPosition) {
-        super(xPosition, yPosition, 'S', 50, 2);
+        super(xPosition, yPosition, 'S', 100, 2);
     }
 
     @Override
@@ -19,7 +17,7 @@ abstract public class Herbivore extends Creature {
         int visionXCenter = (getVision().get(0).size() - 1) / 2;
 
         boolean rule1= getHealth() > 0;//Has health
-        boolean rule2= (getVision().get(visionYCenter + yDirection).get(visionXCenter + xDirection) != null);//Region exists
+        boolean rule2= (getVision().get(visionYCenter + yDirection).get(visionXCenter + xDirection) != null); //Region exists
         if( rule1 && rule2){
             boolean rule3 = (getVision().get(visionYCenter + yDirection).get(visionXCenter + xDirection).getEntity() == null); //Region is empty
             boolean rule4= getVision().get(visionYCenter + yDirection).get(visionXCenter + xDirection).getTerrainType() ==','; //Region is Green

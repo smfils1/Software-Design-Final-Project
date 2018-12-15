@@ -1,48 +1,57 @@
 package csc221.alg.view.game;
 //TODO: Game UI
 import csc221.alg.controller.GameEventHandler;
+import csc221.alg.view.menu.ALGSubscene;
 import csc221.alg.view.menu.CHARACTER;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;//THIS IS FOR THE CONSOLE
-import java.util.Scanner;//THIS IS FOR THE CONSOLE
-import csc221.alg.model.*;//THIS IS FOR THE CONSOLE
+import java.util.LinkedList;
+import java.util.Queue;
 
-//======================================================================================================================
-//THIS IS THE GAME GUI.
-//THE CONSOLE CODE IS BELOW
-//======================================================================================================================
 
-//TODO: Use GridPane instead of AnchorPane
+//TODO: Implement pause and play button
+
+
 public class GameView {
     private GameEventHandler gameHandler;
-    private static final int WIDTH = 900;
+    private static final int WIDTH = 825;
     private static final int HEIGHT = 600;
+    private Tile tileGrid[][];
+    private SideContent sideContent;
+
+
+
+    private ALGSubscene gameOverSubscene;
+    private ALGSubscene winnerSubscene;
+    public AnchorPane getGamePane() {
+        return gamePane;
+    }
+    public SideContent getSideContent() {
+        return sideContent;
+    }
     private AnchorPane gamePane;
     private Scene gameScene;
     private Stage gameStage;
     private ImageView character;
+    Queue<Tile> tileWaitingUpdate = new LinkedList<>();
+
 
 
     public GameView(){
         initializeStage();
         createKeyListeners();
-
-        this.worldModel = World.getInstance();//THIS IS FOR THE CONSOLE CODE
-        this.agent = worldModel.getMainCharacter();//THIS IS FOR THE CONSOLE CODE
-    }
-
-    private void createKeyListeners() {
-        gameScene.setOnKeyPressed(event -> {
-           //TODO:Implement
-        });
-        gameScene.setOnKeyReleased(event -> {
-            //TODO: Implement
-        });
     }
 
     public void setGameHandler(GameEventHandler handler) {
@@ -54,15 +63,87 @@ public class GameView {
         gamePane = new AnchorPane();
         gameScene = new Scene(gamePane,WIDTH,HEIGHT);
         gameStage = new Stage();
-        gameStage.setResizable(false);
+        //gameStage.setResizable(false);
         gameStage.setScene(gameScene);
+        createSideContent();
+
+
     }
 
-    public void createNewGame(CHARACTER choosenCHARACTER){//Game Window
-        createCharacter(choosenCHARACTER);
-        gameStage.show();
+
+    private void createSideContent() {
+        sideContent = new SideContent();
+        gamePane.getChildren().add(sideContent);
     }
 
+    public ALGSubscene getGameOverSubscene() {
+        return gameOverSubscene;
+    }
+
+    public ALGSubscene getWinnerSubscene() {
+        return winnerSubscene;
+    }
+
+    public void createSubscenes() {
+        gameOverSubscene = new ALGSubscene();
+        gamePane.getChildren().add(gameOverSubscene);
+        winnerSubscene = new ALGSubscene();
+        gamePane.getChildren().add(winnerSubscene);
+        Label gameOverText = new Label("GAME OVER!");
+        Label winnerText = new Label("YOU SURVIVED!");
+        gameOverSubscene.getPane().getChildren().add(gameOverText);
+        winnerSubscene.getPane().getChildren().add(winnerText);
+        gameOverText.setLayoutX(85);
+        gameOverText.setLayoutY(100);
+        gameOverText.setFont(Font.font("Verdena",55));
+        winnerText.setLayoutX(60);
+        winnerText.setLayoutY(100);
+        winnerText.setFont(Font.font("Verdena",55));
+    }
+
+
+    public Queue<Tile> getTileWaitingQueue() {
+        return tileWaitingUpdate;
+    }
+
+    public void setTileGrid(Tile[][] tileGrid) {
+        this.tileGrid = tileGrid;
+    }
+
+    public Tile[][] getTileGrid() {
+        return tileGrid;
+    }
+
+    public Paint strColorToPaint(String colorStr) {
+        String color = colorStr.toUpperCase();
+        if(color.equals("TAN")){
+            return Color.TAN;
+        } else if(color.equals("BLUE")){
+
+            return Color.LIGHTBLUE;
+        }else{
+            return Color.LIGHTGREEN;
+        }
+    }
+
+    private void createKeyListeners() {
+        gameStage.setOnCloseRequest(event -> gameHandler.exitEvent());
+        gameScene.setOnKeyPressed(event -> {
+            if(gameHandler!= null) {
+                if (event.getCode() == KeyCode.LEFT) {
+                    gameHandler.moveLeftEvent();
+                } else if (event.getCode() == KeyCode.RIGHT) {
+                    gameHandler.moveRightEvent();
+                } else if (event.getCode() == KeyCode.UP) {
+                    gameHandler.moveUpEvent();
+                } else if (event.getCode() == KeyCode.DOWN) {
+                    gameHandler.moveDownEvent();
+                }
+            }
+        });
+
+    }
+    //TODO: Use character image LATER
     private void createCharacter(CHARACTER choosenCHARACTER){
         character = new ImageView(choosenCHARACTER.getUrl());
         character.setFitWidth(50);
@@ -73,135 +154,10 @@ public class GameView {
         gamePane.getChildren().add(character);
     }
 
-//======================================================================================================================
-//THIS IS THE CONSOLE View & Controllers
-// TODO: Remove CONSOLE CODE AFTER Implementing the GUI version
-//======================================================================================================================
-
-
-    public World worldModel;
-    public Agent agent;
-    private Scanner input;
-
-    //Process User Input
-    private void process(String command) {
-        if (command.charAt(0) == 's') {
-            moveMovables('s');
-        } else if (command.charAt(0) == 'a') {
-            moveMovables('a');
-        } else if (command.charAt(0) == 'd') {
-            moveMovables('d');
-        } else if (command.charAt(0) == 'w') {
-            moveMovables('w');
-        } else{
-            play();
-        }
+    //TODO: Look at LATER
+    public void createNewGame(CHARACTER choosenCHARACTER){//Game Window
+        createCharacter(choosenCHARACTER);
+        gameStage.show();
     }
 
-    //TODO: Move other entities move random
-    //Moves the movable Entities
-    private void moveMovables(char direction){
-        ArrayList<Movable> movableEntities = worldModel.getMovableEntities();
-        for(Movable entity :  movableEntities){
-            int oldX = ((Creature) entity).getXPosition();
-            int oldY= ((Creature) entity).getYPosition();
-            if(entity instanceof Agent) {
-                if(direction == 's' ){
-                    entity.moveDown();
-                }
-                if(direction == 'a' ){
-                    entity.moveLeft();
-                }
-                if(direction == 'd' ){
-                    entity.moveRight();
-                }
-                if(direction == 'w'){
-                    entity.moveUp();
-                }
-            }
-            else{
-                char dir = RandomGenerator.randomDirection();
-                if( dir == 'D' ){
-                    entity.moveDown();
-                }
-                if(dir == 'L'  ){
-                    entity.moveLeft();
-                }
-                if(dir == 'R' ){
-                    entity.moveRight();
-                }
-                if(dir == 'U'){
-                    entity.moveUp();
-                }
-            }
-            updateWorld(oldX,oldY);
-        }
-    }
-
-    // Updates the world
-    public void updateWorld(int x, int y) {
-        for (int j = 0; j < worldModel.getWorld().size(); j++) {
-            for (int i = 0; i < worldModel.getWorld().get(0).size(); i++) {
-                if(worldModel.getWorld().get(j).get(i).getEntity() != null){
-                    Entity entity = worldModel.getWorld().get(j).get(i).getEntity();
-                    int nx = worldModel.getWorld().get(j).get(i).getEntity().getXPosition();
-                    int ny = worldModel.getWorld().get(j).get(i).getEntity().getYPosition();
-                    worldModel.getWorld().get(j).get(i).setEntity(null);
-                    worldModel.getWorld().get(ny).get(nx).setEntity(entity);
-                }
-            }
-        }
-    }
-
-    //Game Loop
-    public void play(){
-        input = new Scanner(System.in);
-        printWorld(worldModel.getWorld());
-        System.out.println("Vision: Agent");
-        printVision(agent.getVision());
-        while(true){
-            System.out.print("Enter Direction: ");
-            String direction = input.nextLine();
-            if(direction.equals("")){
-                System.out.println("Ending Game");
-                break;
-            }
-            process(direction);
-            System.out.println();
-            printWorld(worldModel.getWorld());
-
-            //The Agents Vision
-            System.out.println("Vision: Agent");
-            printVision(agent.getVision());
-
-        }}
-
-    public void printVision(ArrayList<ArrayList<Region>> m) {
-        for (int y = 0; y < m.size(); y++) {
-            for (int x = 0; x < m.get(0).size(); x++) {
-                Region a= m.get(y).get(x);
-                if(a == null){
-                    System.out.print('x');
-                }
-                else {
-                    System.out.print(worldModel.entityToChar(a));
-                }
-            }
-            System.out.println();
-        }
-    }
-    public void printWorld(ArrayList<ArrayList<Region>> m) {
-        for (int y = 0; y < m.size(); y++) {
-            for (int x = 0; x < m.get(0).size(); x++) {
-                Entity entity = m.get(y).get(x).getEntity();
-                if(entity == null){
-                    System.out.print(m.get(y).get(x).getTerrainType());
-                }
-                else{
-                    System.out.print(worldModel.entityToChar(m.get(y).get(x)));
-                }
-            }
-            System.out.println();
-        }
-    }
 }

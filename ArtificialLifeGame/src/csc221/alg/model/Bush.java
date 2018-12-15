@@ -7,6 +7,10 @@ public class Bush extends Entity {
         this.berryAmount = 10;
     }
     private int berryAmount;
+
+    public boolean hasResources() {
+        return berryAmount > 0;
+    }
     public int getBerryAmount() {
         return berryAmount;
     }

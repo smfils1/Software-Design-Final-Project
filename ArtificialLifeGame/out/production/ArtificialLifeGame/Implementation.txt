@@ -13,15 +13,16 @@ World has an 2 arraylists:
 
     A Region contains the terrain type and the entity on it.
     entities.txt ->  '_'= Empty/Null ,'A'=agent ,'b'=Bush ,'C'=Carnivore,'H'= Herbivore ,'B'=Base ,'R'= Rock ,'T'= Tree
-    terrain.txt -> ',' = Grass,'.' = Dirt/Dessert,'~' = Water
+    terrain.txt -> ',' = Grass,'.' = Dessert,'~' = Water
 
     Carnivore = Random computed set of {Lion(L), Wolf(W)}
     Herbivore = Random computed set of {Rabbit(r), Monkey(m)}
 
+    The world also has a Time that stores the current time in seconds, how long is a full day (the cycle), and if it's day or night.
+
 All Creatures have Vision
     Vision -> 'x'= Not Available , and other characters are the same character from Entities.txt & Terrain.txt
-    Creatures move based on their vision & terrain restrictions & health
+    Creatures move based on their vision & terrain restrictions & health.
+    At night the Agent has night vision and can only see within its square-block radius.
 
-Console Implementation:
-The Console Code for the View & Controls are in the GameView class
-//TODO: Convert console code to JavaFX GameController & GameView GUI
+

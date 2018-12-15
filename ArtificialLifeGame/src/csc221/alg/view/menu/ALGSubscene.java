@@ -41,9 +41,18 @@ public class ALGSubscene extends SubScene {
         transition.play();//Start the transition
     }
 
+    public void moveSubSceneLeft(int distance){
+        TranslateTransition transition = new TranslateTransition();
+        //Settings of Transition
+        transition.setDuration(Duration.seconds(1));
+        transition.setNode(this);
+
+        transition.setToX(-1*distance);
+        transition.play();
+    }
+
     public AnchorPane getPane(){
         return (AnchorPane) this.getRoot();
-
     }
 
 

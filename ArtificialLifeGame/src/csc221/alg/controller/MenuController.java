@@ -26,7 +26,9 @@ public class MenuController implements MenuEventHandler {
 
     @Override
     public void hideEvent() {
-        view.getMainStage().hide();
+        if(view.choosenCHARACTER != null) {
+            view.getMainStage().hide();
+        }
     }
 
     @Override
@@ -55,7 +57,6 @@ public class MenuController implements MenuEventHandler {
     @Override
     public void creditsEvent() {
         view.showSubScene(view.getCreditsSubscene());
-
     }
 
     @Override

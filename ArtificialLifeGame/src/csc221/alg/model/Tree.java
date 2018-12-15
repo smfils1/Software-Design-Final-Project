@@ -1,5 +1,6 @@
 package csc221.alg.model;
 
+
 public class Tree extends Entity {
     private int woodAmount;
 
@@ -10,6 +11,10 @@ public class Tree extends Entity {
 
     public int getWoodAmount() {
         return woodAmount;
+    }
+
+    public boolean hasResources() {
+        return woodAmount > 0;
     }
 
     public void decreaseWoodAmount(int woodAmount) {
