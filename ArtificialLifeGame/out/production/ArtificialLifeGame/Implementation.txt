@@ -1,3 +1,5 @@
+Current Implementation:
+
 The Project is in MVC:
     The GUI for the menu is in the Menu Class
     The Controllers for the menu is in the MenuController Class
@@ -17,7 +19,8 @@ World has an 2 arraylists:
     Herbivore = Random computed set of {Rabbit(r), Monkey(m)}
 
 All Creatures have Vision
-Vision -> 'x'= Not Available , and other characters are the same character from Entities.txt & Terrain.txt
+    Vision -> 'x'= Not Available , and other characters are the same character from Entities.txt & Terrain.txt
+    Creatures move based on their vision & terrain restrictions & health
 
 Console Implementation:
 The Console Code for the View & Controls are in the GameView class
