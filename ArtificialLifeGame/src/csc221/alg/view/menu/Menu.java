@@ -5,6 +5,7 @@ import csc221.alg.controller.MenuEventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ public class Menu {
     public List<ALGButton> menuButtons;
     public List<CharacterPicker> characterList;
     public CHARACTER choosenCHARACTER;
+    private ALGSubscene helpText;
+    private ALGSubscene creditsText;
 
     public void setMenuHandler(MenuEventHandler handler) {
         this.menuHandler = handler;
@@ -130,8 +133,12 @@ public class Menu {
         creditsSubscene = new ALGSubscene();
         mainPane.getChildren().add(creditsSubscene);
 
+        createCreditsText();
+
         helpSubscene = new ALGSubscene();
         mainPane.getChildren().add(helpSubscene);
+
+        createHelpText();
 
         scoresSubscene = new ALGSubscene();
         mainPane.getChildren().add(scoresSubscene);
@@ -148,6 +155,54 @@ public class Menu {
         }
         subScene.moveSubScene();
         sceneToHide = subScene;
+    }
+
+    private void createHelpText() {
+        helpText = new ALGSubscene();
+        mainPane.getChildren().add(helpText);
+        InfoLabel helpText = new InfoLabel("Controls");
+        InfoLabel leftArrowKey = new InfoLabel("← : Move Left");
+        InfoLabel upArrowKey = new InfoLabel("↑ : Move Up");
+        InfoLabel rightArrowKey = new InfoLabel("→ : Move Right");
+        InfoLabel downArrowKey = new InfoLabel("↓ : Move Down");
+        helpText.setLayoutX(100);
+        helpText.setLayoutY(25);
+        leftArrowKey.setLayoutX(100);
+        leftArrowKey.setLayoutY(75);
+        upArrowKey.setLayoutX(100);
+        upArrowKey.setLayoutY(125);
+        rightArrowKey.setLayoutX(100);
+        rightArrowKey.setLayoutY(175);
+        downArrowKey.setLayoutX(100);
+        downArrowKey.setLayoutY(225);
+        helpSubscene.getPane().getChildren().add(helpText);
+        helpSubscene.getPane().getChildren().add(leftArrowKey);
+        helpSubscene.getPane().getChildren().add(upArrowKey);
+        helpSubscene.getPane().getChildren().add(rightArrowKey);
+        helpSubscene.getPane().getChildren().add(downArrowKey);
+    }
+
+    private void createCreditsText(){
+        creditsText = new ALGSubscene();
+        mainPane.getChildren().add(creditsText);
+        InfoLabel creditsText = new InfoLabel("Created by:");
+        InfoLabel creatorOne = new InfoLabel("Samuel Fils");
+        InfoLabel creatorTwo = new InfoLabel("Jeffrey Lei");
+        InfoLabel creatorThree = new InfoLabel("Brian Thibeault");
+//        creditsText.setMinWidth(100);
+//        creditsText.setMinHeight(100);
+        creditsText.setLayoutX(100);
+        creditsText.setLayoutY(25);
+        creatorOne.setLayoutX(100);
+        creatorOne.setLayoutY(85);
+        creatorTwo.setLayoutX(100);
+        creatorTwo.setLayoutY(145);
+        creatorThree.setLayoutX(100);
+        creatorThree.setLayoutY(205);
+        creditsSubscene.getPane().getChildren().add(creditsText);
+        creditsSubscene.getPane().getChildren().add(creatorOne);
+        creditsSubscene.getPane().getChildren().add(creatorTwo);
+        creditsSubscene.getPane().getChildren().add(creatorThree);
     }
 
     private void createCharacterChooserSubscene() {
