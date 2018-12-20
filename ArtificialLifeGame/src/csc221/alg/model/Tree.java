@@ -6,7 +6,7 @@ public class Tree extends Entity {
 
     public Tree(int xPosition, int yPosition) {
         super(xPosition, yPosition);
-        this.woodAmount = 50;
+        this.woodAmount = 3;
     }
 
     public int getWoodAmount() {

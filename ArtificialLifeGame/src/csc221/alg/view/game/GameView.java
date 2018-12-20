@@ -138,11 +138,23 @@ public class GameView {
                     gameHandler.moveUpEvent();
                 } else if (event.getCode() == KeyCode.DOWN) {
                     gameHandler.moveDownEvent();
+                } else if (event.getCode() == KeyCode.A) {
+                    gameHandler.attackEvent();
+                } else if (event.getCode() == KeyCode.B) {
+                    gameHandler.buildBaseEvent();
+                } else if (event.getCode() == KeyCode.C) {
+                    gameHandler.collectResourceEvent();
+                } else if (event.getCode() == KeyCode.E) {
+                    gameHandler.eatEvent();
+                } else if (event.getCode() == KeyCode.H) {
+                    gameHandler.hideEvent();
+                } else if (event.getCode() == KeyCode.R) {
+                    gameHandler.restEvent();
                 }
             }
         });
-
     }
+
     //TODO: Use character image LATER
     private void createCharacter(CHARACTER choosenCHARACTER){
         character = new ImageView(choosenCHARACTER.getUrl());

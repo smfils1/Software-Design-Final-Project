@@ -69,6 +69,48 @@ public class GameController implements GameEventHandler {
     }
 
     @Override
+    // TODO: Test and debug
+    public void attackEvent() {
+        Agent agent = World.getInstance().getMainCharacter();
+        agent.attack();
+    }
+
+    @Override
+    // TODO: Test and debug
+    public void buildBaseEvent() {
+        Agent agent = World.getInstance().getMainCharacter();
+        agent.buildBase();
+    }
+
+    @Override
+    // TODO: Test and debug
+    public void collectResourceEvent() {
+        Agent agent = World.getInstance().getMainCharacter();
+        agent.collectResource();
+    }
+
+    @Override
+    // TODO: Test and debug
+    public void eatEvent() {
+        Agent agent = World.getInstance().getMainCharacter();
+        agent.eat();
+    }
+
+    @Override
+    // TODO: Test and debug
+    public void hideEvent() {
+        Agent agent = World.getInstance().getMainCharacter();
+        agent.hide();
+    }
+
+    @Override
+    // TODO: Test and debug
+    public void restEvent() {
+        Agent agent = World.getInstance().getMainCharacter();
+        agent.rest();
+    }
+
+    @Override
     public void moveLeftEvent() {
         process('L');
     }
@@ -88,7 +130,6 @@ public class GameController implements GameEventHandler {
         process('D');
     }
 
-
     private void process(char command) {
         if (command == 'D') {
             moveAgent('D');
@@ -101,7 +142,7 @@ public class GameController implements GameEventHandler {
         }
     }
 
-    private void moveAgent(char direction){
+    private void moveAgent(char direction) {
         Agent agent = World.getInstance().getMainCharacter();
         int oldX = agent.getXPosition();
         int oldY = agent.getYPosition();

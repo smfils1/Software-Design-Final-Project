@@ -21,16 +21,6 @@ abstract public class Creature extends Entity implements Movable {
     }
 
     @Override
-    public void move(int xOffset, int yOffset) {
-        if (canMove(this.getXPosition() + xOffset, this.getYPosition() + yOffset)) {
-            this.setXPosition(getXPosition() + xOffset);
-            this.setYPosition(getYPosition() + yOffset);
-            updateVision(World.getInstance().getWorld());
-            updateHealth();
-        }
-    }
-
-    @Override
     //Moves creature if it can move
     public void moveLeft() {
         move(-1, 0);
@@ -54,21 +44,12 @@ abstract public class Creature extends Entity implements Movable {
         move(0, 1);
     }
 
-    //Updates the creatures vision of the world w/ a square radius view
-    public void updateVision(ArrayList<ArrayList<Region>> world){
-        int WorldYSize = world.size();
-        int WorldXSize = world.get(0).size();
-        vision = new ArrayList<>();
-        for(int y = getYPosition() - visionRadius; y <= getYPosition() + visionRadius; y++) {
-            ArrayList<Region> rowVision= new ArrayList<>();
-            for (int x = getXPosition() - visionRadius; x <= getXPosition() + visionRadius; x++) {
-                if ((x <= WorldXSize - 1 && x >= 0) && (y <= WorldYSize -1 && y >= 0)) {
-                    rowVision.add(world.get(y).get(x));
-                } else {
-                    rowVision.add(null);
-                }
-            }
-            vision.add(rowVision);
+    private void move(int xOffset, int yOffset) {
+        if (canMove(this.getXPosition() + xOffset, this.getYPosition() + yOffset)) {
+            this.setXPosition(getXPosition() + xOffset);
+            this.setYPosition(getYPosition() + yOffset);
+            updateVision(World.getInstance().getWorld());
+            updateHealth();
         }
     }
 
@@ -129,6 +110,24 @@ abstract public class Creature extends Entity implements Movable {
 
     public void setVisionRadius(int visionRadius) {
         this.visionRadius = visionRadius;
+    }
+
+    //Updates the creatures vision of the world w/ a square radius view
+    public void updateVision(ArrayList<ArrayList<Region>> world){
+        int WorldYSize = world.size();
+        int WorldXSize = world.get(0).size();
+        vision = new ArrayList<>();
+        for(int y = getYPosition() - visionRadius; y <= getYPosition() + visionRadius; y++) {
+            ArrayList<Region> rowVision= new ArrayList<>();
+            for (int x = getXPosition() - visionRadius; x <= getXPosition() + visionRadius; x++) {
+                if ((x <= WorldXSize - 1 && x >= 0) && (y <= WorldYSize -1 && y >= 0)) {
+                    rowVision.add(world.get(y).get(x));
+                } else {
+                    rowVision.add(null);
+                }
+            }
+            vision.add(rowVision);
+        }
     }
 
 }
