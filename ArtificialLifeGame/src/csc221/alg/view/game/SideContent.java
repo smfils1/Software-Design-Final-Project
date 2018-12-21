@@ -56,7 +56,16 @@ public class SideContent extends SubScene {
     public void setTime(int seconds) {
         time.setText("Time: " + seconds + " s");
     }
-    public void setBackpack(Backpack bp) { backpack.setText("Inventory" + bp.getBerryAmount());}
+    public void setBackpack(Backpack bp) {
+        backpack.setText("Inventory: \n" +
+                              "Wood: " + bp.getWoodAmount() +
+                          "\n Berry: " + bp.getBerryAmount() +
+                           "\nSteak: " + bp.getSteakAmount() +
+                           "\nStone: " + bp.getstoneAmount() +
+                           "\nSpear: " + bp.getSpearAmount() +
+                           "\nTorch: " + bp.getFlashlightAmount() +
+                      "\nSpace Left: " + bp.getSpace());
+    }
 
     public AnchorPane getPane(){
         return (AnchorPane) this.getRoot();

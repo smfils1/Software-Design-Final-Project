@@ -74,12 +74,14 @@ public class GameController implements GameEventHandler {
     public void attackEvent() {
         Agent agent = World.getInstance().getMainCharacter();
         agent.attack();
+        gameView.getSideContent().setBackpack(agent.getBackpack());
     }
 
     @Override
     public void buildBaseEvent() {
         Agent agent = World.getInstance().getMainCharacter();
         agent.buildBase();
+        gameView.getSideContent().setBackpack(agent.getBackpack());
     }
 
     @Override
