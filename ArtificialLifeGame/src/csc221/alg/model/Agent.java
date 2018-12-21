@@ -191,17 +191,29 @@ public class Agent extends Creature {
 
     private boolean isBase(int x, int y) { // Private helper method used by buildBase() and rest().
         Region region = getVision().get(y).get(x);
-        return region.getEntity() instanceof Base;
+        if(region == null) {
+            return false;
+        } else {
+            return region.getEntity() instanceof Base;
+        }
     }
 
     private boolean isRock(int x, int y) { // Private helper method used by hide().
         Region region = getVision().get(y).get(x);
-        return (region.getEntity() instanceof Rock) && (((Rock)region.getEntity()).getSize() == 'L');
+        if(region == null) {
+            return false;
+        } else {
+            return (region.getEntity() instanceof Rock) && (((Rock)region.getEntity()).getSize() == 'L');
+        }
     }
 
     private boolean isTree(int x, int y) { // Private helper method used by rest().
         Region region = getVision().get(y).get(x);
-        return region.getEntity() instanceof Tree;
+        if(region == null) {
+            return false;
+        } else {
+            return region.getEntity() instanceof Tree;
+        }
     }
 
     @Override
@@ -218,10 +230,6 @@ public class Agent extends Creature {
         }
         setVisiblity(true); // Restores visibility if agent was currently hiding behind a Rock.
         resting = false;    // Agent cannot be resting while moving!
-
-        /*TODO: call private function that check if agent is next to an carnivore to decrease health (this may need to be implemented somewhere else
-        because I think updateHealth() is only called after the agent moves, but carnivores should be able to attack the agent even when he's standing still).
-         */
     }
 
     @Override
