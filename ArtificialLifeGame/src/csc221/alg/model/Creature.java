@@ -11,7 +11,7 @@ abstract public class Creature extends Entity implements Movable {
     private ArrayList<ArrayList<Region>> vision;
     //TODO: May have a speed that relates to how many times it can move a second. Implement LATER
 
-    public Creature(int xPosition, int yPosition, char size, int health, int visionRadius) {
+    public Creature(int xPosition, int yPosition, char size, double health, int visionRadius) {
         super(xPosition, yPosition);
         this.size = size;
         this.health = health;
@@ -81,7 +81,7 @@ abstract public class Creature extends Entity implements Movable {
 
     //Default health updates for all Creatures
     public void updateHealth() {
-        decreaseHealth(0.5);
+        decreaseHealth(0);
     }
 
     public void setVisiblity(boolean bool) {

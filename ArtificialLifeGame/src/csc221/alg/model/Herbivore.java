@@ -3,7 +3,7 @@ package csc221.alg.model;
 abstract public class Herbivore extends Creature {
 
     public Herbivore(int xPosition, int yPosition) {
-        super(xPosition, yPosition, 'S', 100, 2);
+        super(xPosition, yPosition, 'S', 50, 2);
     }
 
     @Override
