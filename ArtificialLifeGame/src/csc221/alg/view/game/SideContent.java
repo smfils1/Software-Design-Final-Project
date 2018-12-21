@@ -1,5 +1,6 @@
 package csc221.alg.view.game;
 
+import csc221.alg.model.Backpack;
 import javafx.geometry.Insets;
 import javafx.scene.SubScene;
 import javafx.scene.layout.*;
@@ -15,6 +16,7 @@ public class SideContent extends SubScene {
     private Text health;
     private Text time;
     private Text rescueTime;
+    private Text backpack;
 
     public SideContent(){
         super(new AnchorPane(),WIDTH,HEIGHT);
@@ -27,18 +29,22 @@ public class SideContent extends SubScene {
         time = new Text("Countdown: 0 s");
         rescueTime = new Text("Rescue Time: ");
         health = new Text("Health: 100 hp");
+        backpack = new Text("Inventory: ");
         time.setLayoutX(10);
         time.setLayoutY(20);
         rescueTime.setLayoutX(10);
         rescueTime.setLayoutY(50);
         health.setLayoutX(10);
         health.setLayoutY(80);
+        backpack.setLayoutX(10);
+        backpack.setLayoutY(110);
         health.setFont(Font.font("Verdena",23));
         time.setFont(Font.font("Verdena",23));
         rescueTime.setFont(Font.font("Verdena",23));
+        backpack.setFont(Font.font("Verdena",23));
         Line line = new Line(0, 0, 0, HEIGHT);
         Line line2 = new Line(0, HEIGHT/5, WIDTH, HEIGHT/5);
-        root.getChildren().addAll(line,line2,time,rescueTime, health);
+        root.getChildren().addAll(line,line2,time,rescueTime, health, backpack);
     }
 
     public void setRescueTime(int seconds) {
@@ -50,6 +56,7 @@ public class SideContent extends SubScene {
     public void setTime(int seconds) {
         time.setText("Time: " + seconds + " s");
     }
+    public void setBackpack(Backpack bp) { backpack.setText("Inventory" + bp.getBerryAmount());}
 
     public AnchorPane getPane(){
         return (AnchorPane) this.getRoot();

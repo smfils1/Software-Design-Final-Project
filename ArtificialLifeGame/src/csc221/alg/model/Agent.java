@@ -201,4 +201,8 @@ public class Agent extends Creature{
         }
         return false;
     }
+
+    public Backpack getBackpack(){
+        return backpack;
+    }
 }

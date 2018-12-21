@@ -68,6 +68,8 @@ public class GameController implements GameEventHandler {
         }
     }
 
+    // TODO: Update inventory after each agent action
+
     @Override
     // TODO: Test and debug
     public void attackEvent() {
@@ -87,6 +89,7 @@ public class GameController implements GameEventHandler {
     public void collectResourceEvent() {
         Agent agent = World.getInstance().getMainCharacter();
         agent.collectResource();
+        gameView.getSideContent().setBackpack(agent.getBackpack());
     }
 
     @Override
@@ -94,6 +97,7 @@ public class GameController implements GameEventHandler {
     public void eatEvent() {
         Agent agent = World.getInstance().getMainCharacter();
         agent.eat();
+        gameView.getSideContent().setBackpack(agent.getBackpack());
     }
 
     @Override
