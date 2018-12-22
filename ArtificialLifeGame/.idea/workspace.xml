@@ -61,7 +61,7 @@
       <file leaf-file-name="GameView.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/csc221/alg/view/game/GameView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
+            <state relative-caret-position="2278">
               <caret line="134" column="34" selection-end-line="173" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -104,25 +104,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameController.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GameController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/csc221/alg/controller/GameController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="33" column="23" selection-start-line="33" selection-start-column="23" selection-end-line="33" selection-end-column="23" />
+            <state relative-caret-position="238">
+              <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#4637#4638#0" expanded="true" />
-                <element signature="e#4676#4677#0" expanded="true" />
-                <element signature="e#4726#4727#0" expanded="true" />
-                <element signature="e#4766#4767#0" expanded="true" />
-                <element signature="e#4813#4814#0" expanded="true" />
-                <element signature="e#4850#4851#0" expanded="true" />
-                <element signature="e#4899#4900#0" expanded="true" />
-                <element signature="e#4938#4939#0" expanded="true" />
-                <element signature="e#9324#9325#0" expanded="true" />
-                <element signature="e#9366#9367#0" expanded="true" />
-                <element signature="e#9412#9413#0" expanded="true" />
-                <element signature="e#9455#9456#0" expanded="true" />
                 <element signature="method#updateView#0;class#GameController#0" />
                 <element signature="method#updateCreaturePosition#0;class#GameController#0" />
               </folding>
@@ -130,10 +118,19 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="SideContent.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/csc221/alg/view/game/SideContent.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-753">
+              <caret line="27" selection-start-line="27" selection-end-line="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Tile.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/csc221/alg/view/game/Tile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
+            <state relative-caret-position="1020">
               <caret line="60" column="8" selection-start-line="60" selection-start-column="8" selection-end-line="60" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -147,8 +144,8 @@
       <file leaf-file-name="Menu.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/csc221/alg/view/menu/Menu.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="711">
-              <caret line="240" lean-forward="true" selection-start-line="240" selection-end-line="240" />
+            <state relative-caret-position="3723">
+              <caret line="240" selection-start-line="240" selection-end-line="240" />
             </state>
           </provider>
         </entry>
@@ -156,7 +153,7 @@
       <file leaf-file-name="CharacterPicker.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/csc221/alg/view/menu/CharacterPicker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
+            <state relative-caret-position="646">
               <caret line="45" selection-start-line="45" selection-end-line="45" />
             </state>
           </provider>
@@ -230,7 +227,6 @@
         <option value="$PROJECT_DIR$/src/csc221/alg/model/Lifeform.java" />
         <option value="$PROJECT_DIR$/src/csc221/alg/model/Time.java" />
         <option value="$PROJECT_DIR$/src/csc221/alg/model/World.java" />
-        <option value="$PROJECT_DIR$/src/csc221/alg/view/game/SideContent.java" />
         <option value="$PROJECT_DIR$/src/csc221/alg/controller/GameEventHandler.java" />
         <option value="$PROJECT_DIR$/src/csc221/alg/view/menu/Menu.java" />
         <option value="$PROJECT_DIR$/src/csc221/alg/view/menu/CharacterPicker.java" />
@@ -238,6 +234,7 @@
         <option value="$PROJECT_DIR$/src/csc221/alg/view/game/GameView.java" />
         <option value="$PROJECT_DIR$/src/csc221/alg/view/game/Tile.java" />
         <option value="$PROJECT_DIR$/src/csc221/alg/controller/GameController.java" />
+        <option value="$PROJECT_DIR$/src/csc221/alg/view/game/SideContent.java" />
       </list>
     </option>
   </component>
@@ -255,9 +252,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -348,6 +342,9 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -511,14 +508,14 @@
       <window_info anchor="right" id="Palette&#9;" order="9" />
       <window_info id="Image Layers" order="6" />
       <window_info anchor="right" id="Capture Analysis" order="7" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50284094" side_tool="true" visible="true" weight="0.13066202" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5042614" side_tool="true" visible="true" weight="0.13066202" />
       <window_info anchor="right" id="Maven Projects" order="5" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4971591" weight="0.13066202" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49573863" weight="0.13066202" />
       <window_info anchor="bottom" id="Version Control" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="13" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.29829547" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.3068182" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="3" />
@@ -531,12 +528,12 @@
       <window_info anchor="bottom" id="Find" order="1" weight="0.3292683" />
       <window_info anchor="bottom" id="Changes" order="7" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="right" id="Database" order="6" />
       <window_info anchor="bottom" id="Profiler" order="9" />
       <window_info anchor="bottom" id="Problems" order="10" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Application Servers" order="12" />
+      <window_info anchor="right" id="Database" order="6" />
     </layout>
     <layout-to-restore>
       <window_info anchor="bottom" id="Application Servers" order="12" />
@@ -843,13 +840,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/csc221/alg/view/game/SideContent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="83" selection-start-line="83" selection-end-line="83" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/csc221/alg/controller/GameEventHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -866,15 +856,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/csc221/alg/view/menu/CharacterPicker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
+        <state relative-caret-position="646">
           <caret line="45" selection-start-line="45" selection-end-line="45" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/csc221/alg/view/menu/Menu.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="711">
-          <caret line="240" lean-forward="true" selection-start-line="240" selection-end-line="240" />
+        <state relative-caret-position="3723">
+          <caret line="240" selection-start-line="240" selection-end-line="240" />
         </state>
       </provider>
     </entry>
@@ -887,7 +877,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/csc221/alg/view/game/GameView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
+        <state relative-caret-position="2278">
           <caret line="134" column="34" selection-end-line="173" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -913,7 +903,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/csc221/alg/view/game/Tile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
+        <state relative-caret-position="1020">
           <caret line="60" column="8" selection-start-line="60" selection-start-column="8" selection-end-line="60" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -925,25 +915,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/csc221/alg/controller/GameController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="33" column="23" selection-start-line="33" selection-start-column="23" selection-end-line="33" selection-end-column="23" />
+        <state relative-caret-position="238">
+          <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4637#4638#0" expanded="true" />
-            <element signature="e#4676#4677#0" expanded="true" />
-            <element signature="e#4726#4727#0" expanded="true" />
-            <element signature="e#4766#4767#0" expanded="true" />
-            <element signature="e#4813#4814#0" expanded="true" />
-            <element signature="e#4850#4851#0" expanded="true" />
-            <element signature="e#4899#4900#0" expanded="true" />
-            <element signature="e#4938#4939#0" expanded="true" />
-            <element signature="e#9324#9325#0" expanded="true" />
-            <element signature="e#9366#9367#0" expanded="true" />
-            <element signature="e#9412#9413#0" expanded="true" />
-            <element signature="e#9455#9456#0" expanded="true" />
             <element signature="method#updateView#0;class#GameController#0" />
             <element signature="method#updateCreaturePosition#0;class#GameController#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/csc221/alg/view/game/SideContent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-753">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
         </state>
       </provider>
     </entry>
