@@ -43,7 +43,7 @@ public class SideContent extends SubScene {
         rescueTime.setFont(Font.font("Verdena",23));
         backpack.setFont(Font.font("Verdena",23));
         Line line = new Line(0, 0, 0, HEIGHT);
-        Line line2 = new Line(0, HEIGHT/5, WIDTH, HEIGHT/5);
+        Line line2 = new Line(0, HEIGHT/7, WIDTH, HEIGHT/7);
         root.getChildren().addAll(line,line2,time,rescueTime, health, backpack);
     }
 
@@ -59,7 +59,7 @@ public class SideContent extends SubScene {
     public void setBackpack(Backpack bp) {
         backpack.setText("Inventory: \n" +
                               "Wood: " + bp.getWoodAmount() +
-                          "\n Berry: " + bp.getBerryAmount() +
+                           "\nBerry: " + bp.getBerryAmount() +
                            "\nSteak: " + bp.getSteakAmount() +
                            "\nStone: " + bp.getstoneAmount() +
                            "\nSpear: " + bp.getSpearAmount() +
