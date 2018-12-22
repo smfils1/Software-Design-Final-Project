@@ -6,7 +6,7 @@ abstract class Carnivore extends Creature {
         super(xPosition, yPosition, 'L', 100, 4);
     }
 
-    private void attack() { // A Carnivore can attack Agent or Base.
+    private void attackAdjacent() { // A Carnivore can attack Agent or Base.
         if(!attackAgent()) {
             attackBase();
         }
@@ -46,7 +46,7 @@ abstract class Carnivore extends Creature {
         return agentFound;
     }
 
-    private boolean attackBase() { // This method allows a Carnivore to attack a Base.
+    private void attackBase() { // This method allows a Carnivore to attack a Base.
         //Vision Center
         int visionYCenter = (getVision().size() - 1) / 2;
         int visionXCenter = (getVision().get(0).size() - 1) / 2;
@@ -75,7 +75,55 @@ abstract class Carnivore extends Creature {
                 decreaseHealth(1);  // Attacking also decreases Carnivore's health by 1.
             }
         }
-        return baseFound;
+    }
+
+    private void attackWithinVision() { // A Carnivore can attack Agent or Base.
+        if(!attackAgentWithinVision()) {
+            attackBaseWithinVision();
+        }
+    }
+
+    private boolean attackAgentWithinVision() { // This method allows a Carnivore to attack an Agent.
+        boolean wasAttack = false;
+        // Check for agent within vision area.
+        for (int y = 0; y < getVision().size(); y++) {
+            for (int x = 0; x < getVision().get(0).size(); x++) {
+                Region region = getVision().get(y).get(x);
+                if( (getSize() == 'M' || getSize() == 'L')
+                        && region != null
+                        && region.getEntity() instanceof Agent
+                        && ((Agent)region.getEntity()).isVisible() ) {
+                    Agent agent = (Agent)(region.getEntity());
+                    agent.decreaseHealth(3); // Each attack takes 3 hp from agent.
+                    decreaseHealth(1);  // Attacking also decreases Carnivore's health by 1.
+                    wasAttack = true;
+                    break; // Stop checking the rest of the vision once an attack has been done.
+                }
+            }
+            if (wasAttack) {break;} // Stop checking the rest of the vision once an attack has been done.
+        }
+        return wasAttack;
+    }
+
+    private void attackBaseWithinVision() { // This method allows a Carnivore to attack a Base.
+        boolean wasAttack = false;
+        // Check for base within vision area.
+        for (int y = 0; y < getVision().size(); y++) {
+            for (int x = 0; x < getVision().get(0).size(); x++) {
+                Region region = getVision().get(y).get(x);
+                if( (getSize() == 'L')
+                        && region != null
+                        && region.getEntity() instanceof Base
+                        && ((Base)region.getEntity()).getStrength() > 0 ) {
+                    Base base = (Base)(region.getEntity());
+                    base.decreaseStrength(3); // Each attack takes 3 strength points from base.
+                    decreaseHealth(1);  // Attacking also decreases Carnivore's health by 1.
+                    wasAttack = true;
+                    break; // Stop checking the rest of the vision once an attack has been done.
+                }
+            }
+            if (wasAttack) {break;} // Stop checking the rest of the vision once an attack has been done.
+        }
     }
 
     private boolean isAgent(int x, int y) { // Private helper method used by attack().
@@ -99,7 +147,8 @@ abstract class Carnivore extends Creature {
     @Override
     public void updateHealth() {
         decreaseHealth(0);
-        attack();
+        // attackAdjacent(); // attackAdjacent is disabled in favor of the attackWithinVision method.
+        attackWithinVision();
     }
 
     @Override

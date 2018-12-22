@@ -3,6 +3,8 @@ package csc221.alg.model;
 public class Agent extends Creature {
     final private Backpack backpack;
     private boolean resting;
+    private int lastRest;
+    private int lastEat;
 
     public Agent(int xPosition, int yPosition) {
         super(xPosition, yPosition, 'M', 100,3);
@@ -17,11 +19,13 @@ public class Agent extends Creature {
         for (int y = 0; y < getVision().size(); y++) {
             for (int x = 0; x < getVision().get(0).size(); x++) {
                 Region region = getVision().get(y).get(x);
-                if ((backpack.getSpearAmount() > 0) &&
+                if ((backpack.getSpearAmount() > 0) && (region != null) &&
                         (region.getEntity() instanceof Carnivore) &&
                         ((Carnivore)region.getEntity()).isAlive()) {
                     Carnivore carnivore = (Carnivore)(region.getEntity());
                     carnivore.decreaseHealth(20); // A spear attack inflicts 20 points of damage.
+                    setVisiblity(true); // Restores visibility if agent was currently hiding behind a Rock.
+                    resting = false;    // Agent cannot be resting while attacking.
                     wasAttack = true;
                     break; // Stop checking the rest of the vision once an attack has been done.
                 }
@@ -33,15 +37,19 @@ public class Agent extends Creature {
             for (int y = 0; y < getVision().size(); y++) {
                 for (int x = 0; x < getVision().get(0).size(); x++) {
                     Region region = getVision().get(y).get(x);
-                    if ((region.getEntity() instanceof Herbivore) &&
+                    if ((region != null) && (region.getEntity() instanceof Herbivore) &&
                             ((Herbivore)region.getEntity()).isAlive()) {
                         Herbivore herbivore = (Herbivore)(region.getEntity());
                         if(backpack.getSpearAmount() > 0) {
                             herbivore.decreaseHealth(20); // A spear attack inflicts 20 points of damage.
                             wasAttack = true;
+                            setVisiblity(true); // Restores visibility if agent was currently hiding behind a Rock.
+                            resting = false;    // Agent cannot be resting while attacking.
                         } else if(herbivore.getSize() == 'S') { // Can only attack with hands on Small herbivores.
                             herbivore.decreaseHealth(10); // A hand attack inflicts 10 points of damage.
                             wasAttack = true;
+                            setVisiblity(true); // Restores visibility if agent was currently hiding behind a Rock.
+                            resting = false;    // Agent cannot be resting while attacking.
                         }
                         if (herbivore.isDead()) {
                             switch(herbivore.getSize()) {
@@ -100,6 +108,8 @@ public class Agent extends Creature {
                 base.increaseStrength(5); // Each unit of wood increases Base strength by 5 points.
                 backpack.removeWood();    // Remove a unit of wood from backpack after it's used.
                 decreaseHealth(1);  // Building decreases agents's health by 1.
+                setVisiblity(true); // Restores visibility if agent was currently hiding behind a Rock.
+                resting = false;    // Agent cannot be resting while building.
             }
         }
     }
@@ -129,7 +139,7 @@ public class Agent extends Creature {
             Rock rock = (Rock)(region.getEntity());
             if(rock.getSize() == 'S') {                     // A stone is a small Rock.
                 if(backpack.addStone(1)) {
-                    // TODO: Remove stone from 'vision' and/or 'world';
+                    backpack.getstoneAmount(); // TO DO: Remove stone from 'vision' and/or 'world';
                 };
             }
         } else if(region.getEntity() instanceof Tree) {     // woodAmount of 1 represents an armful of wood.
@@ -141,17 +151,27 @@ public class Agent extends Creature {
             }
         }
         decreaseHealth(1);  // Collecting resources decreases agents's health by 1.
+        setVisiblity(true); // Restores visibility if agent was currently hiding behind a Rock.
+        resting = false;    // Agent cannot be resting while collecting.
     }
 
     public void eat() {             // In the controller section press 'E'.
         // The method allows agent to eat berries or steak if any is in backpack.
-        // TODO: Check if enough time elapsed since last time agent ate.
-        if(backpack.getBerryAmount() > 0) { // If Backpack contains berries and steak, eat berries first.
-            backpack.removeBerry();
-            increaseHealth(10);         // Eating berries increases health by 10 points.
-        } else if(backpack.getSteakAmount() > 0) {
-            backpack.removeSteak();
-            increaseHealth(20);         // Eating steak increases health by 20 points.
+        int now = World.getInstance().getTime().getCurrentTime(); // Can only eat every 5 time units.
+        if(now - lastEat >= 5) {
+            if(backpack.getBerryAmount() > 0) { // If Backpack contains berries and steak, eat berries first.
+                backpack.removeBerry();
+                increaseHealth(10);         // Eating berries increases health by 10 points.
+                lastEat = now;
+                setVisiblity(true); // Restores visibility if agent was currently hiding behind a Rock.
+                resting = false;    // Agent cannot be resting while eating.
+            } else if(backpack.getSteakAmount() > 0) {
+                backpack.removeSteak();
+                increaseHealth(20);         // Eating steak increases health by 20 points.
+                lastEat = now;
+                setVisiblity(true); // Restores visibility if agent was currently hiding behind a Rock.
+                resting = false;    // Agent cannot be resting while eating.
+            }
         }
     }
 
@@ -171,17 +191,23 @@ public class Agent extends Creature {
 
     public void rest() {            // In the controller section press 'R'.
         // This method allows agent to sleep at base or rest under a tree.
-        // TODO: Check if enough time elapsed since last time agent rested.
-        //Vision Center
-        int visionYCenter = (getVision().size() - 1) / 2;
-        int visionXCenter = (getVision().get(0).size() - 1) / 2;
-        // Check adjacent left, right, up, and down for a Base or Tree.)
-        if( isBase(visionXCenter - 1, visionYCenter) || isBase(visionXCenter + 1, visionYCenter)
-                || isBase(visionXCenter, visionYCenter - 1) || isBase(visionXCenter, visionYCenter + 1) ) {
-            increaseHealth(20); // Resting at base increases health by 20 points.
-        } else if( isTree(visionXCenter - 1, visionYCenter) || isTree(visionXCenter + 1, visionYCenter)
-                || isTree(visionXCenter, visionYCenter - 1) || isTree(visionXCenter, visionYCenter + 1) ) {
-            increaseHealth(10); // Resting under a tree increases health by 10 points.
+        int now = World.getInstance().getTime().getCurrentTime();
+        if(now - lastRest >= 10) { // Can only rest once every 10 time units.
+            //Vision Center
+            int visionYCenter = (getVision().size() - 1) / 2;
+            int visionXCenter = (getVision().get(0).size() - 1) / 2;
+            // Check adjacent left, right, up, and down for a Base or Tree.)
+            if( isBase(visionXCenter - 1, visionYCenter) || isBase(visionXCenter + 1, visionYCenter)
+                    || isBase(visionXCenter, visionYCenter - 1) || isBase(visionXCenter, visionYCenter + 1) ) {
+                increaseHealth(20); // Resting at base increases health by 20 points.
+                resting = true;
+                lastRest = now;
+            } else if( isTree(visionXCenter - 1, visionYCenter) || isTree(visionXCenter + 1, visionYCenter)
+                    || isTree(visionXCenter, visionYCenter - 1) || isTree(visionXCenter, visionYCenter + 1) ) {
+                increaseHealth(10); // Resting under a tree increases health by 10 points.
+                resting = true;
+                lastRest = now;
+            }
         }
     }
 
@@ -242,11 +268,11 @@ public class Agent extends Creature {
         int visionXCenter = (getVision().get(0).size() - 1) / 2;
         boolean rule1= getHealth() > 0; //Has health
         boolean rule2= (getVision().get(visionYCenter + yDirection).get(visionXCenter + xDirection) != null); //Region exists
-        if( rule1 && rule2){
-            boolean rule3 = (getVision().get(visionYCenter + yDirection).get(visionXCenter + xDirection).getEntity() == null); //Region is empty
-            return rule3;
+        if( rule1 && rule2) {
+            return (getVision().get(visionYCenter + yDirection).get(visionXCenter + xDirection).getEntity() == null); //Region is empty
+        } else {
+            return false;
         }
-        return false;
     }
 
     public Backpack getBackpack(){
