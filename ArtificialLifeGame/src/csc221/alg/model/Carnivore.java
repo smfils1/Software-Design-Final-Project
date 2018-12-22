@@ -95,7 +95,7 @@ abstract class Carnivore extends Creature {
                         && ((Agent)region.getEntity()).isVisible()
                         && !((Agent)region.getEntity()).isAtBase()) {
                     Agent agent = (Agent)(region.getEntity());
-                    agent.decreaseHealth(3); // Each attack takes 3 hp from agent.
+                    agent.decreaseHealth(2); // Each attack takes 2 hp from agent.
                     decreaseHealth(1);  // Attacking also decreases Carnivore's health by 1.
                     wasAttack = true;
                     break; // Stop checking the rest of the vision once an attack has been done.
@@ -117,7 +117,7 @@ abstract class Carnivore extends Creature {
                         && region.getEntity() instanceof Base
                         && ((Base)region.getEntity()).getStrength() > 0 ) {
                     Base base = (Base)(region.getEntity());
-                    base.decreaseStrength(3); // Each attack takes 3 strength points from base.
+                    base.decreaseStrength(2); // Each attack takes 2 strength points from base.
                     decreaseHealth(1);  // Attacking also decreases Carnivore's health by 1.
                     wasAttack = true;
                     break; // Stop checking the rest of the vision once an attack has been done.
