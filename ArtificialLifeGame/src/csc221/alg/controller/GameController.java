@@ -5,35 +5,49 @@ import csc221.alg.view.game.GameView;
 import csc221.alg.view.game.Tile;
 import csc221.alg.view.menu.Menu;
 import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
+import javafx.animation.Timeline;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import java.util.ArrayList;
-import java.util.Timer;
 import java.util.TimerTask;
+
+import csc221.alg.model.*;
+import csc221.alg.view.game.GameView;
+import csc221.alg.view.menu.Character;
+import csc221.alg.view.game.Tile;
+import csc221.alg.view.menu.Menu;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.util.Duration;
 
 //TODO: Implement pause and play button eventListeners
 
 public class GameController implements GameEventHandler {
     private GameView gameView;
     private Menu menuView;
-    private boolean running;
-
+    private Timeline gameLoop;
+    private int FPS = 8;
 
     public GameController(Menu menu, GameView gameView) {
-        running = true;
+        gameLoop = new Timeline();
         this.gameView = gameView;
         this.menuView = menu;
         gameView.setGameHandler(this);
         menuView.setGameHandler(this);
-    }
+        gameView.getSideContent().setGameHandler(this);
 
+    }
 
     @Override
     public void exitEvent() {
         gameView.setGameHandler(null);
 
-        running = false;
+        gameLoop.stop();
         System.exit(1);
     }
 
@@ -49,20 +63,33 @@ public class GameController implements GameEventHandler {
             for (int j = 0; j < y; j++) {
                 for (int i = 0; i < x; i++) {
                     Entity entity = world.get(j).get(i).getEntity();
-                    char entityChar = World.getInstance().entityToChar(entity);
-                    Paint terrainColor = gameView.strColorToPaint(World.getInstance().terrainToColor(world.get(j).get(i)));
-                    Tile tile = new Tile(i,j, 15, entityChar, terrainColor);
-                    tileGrid[i][j] = tile;
-                    gameView.getGamePane().getChildren().add(tile);
+                    String entityUrl = World.getInstance().entityToUrl(entity);
+                    //char entityUrl = World.getInstance().entityToChar(entity);
+                    Paint terrainColor = gameView.strColorToPaint(World.getInstance().terrainColor(world.get(j).get(i)));
+                    Tile tile;
+                    if((entity instanceof Agent)) {
+                        tile = new Tile(i, j, 15, menuView.choosenCHARACTER.getUrl(), terrainColor);
+                        tileGrid[i][j] = tile;
+
+                    }else{
+                        tile = new Tile(i, j, 15, entityUrl, terrainColor);
+                        //tile = new Tile(i, j, 15, entityUrl, terrainColor);
+                        tileGrid[i][j] = tile;
+                    }
+                    gameView.getGamePane().getChildren().add(0,tile);
                     if(entity instanceof Movable){
                         gameView.getTileWaitingQueue().add(tile);
                     }
                 }
+
             }
-            gameView.createSubscenes();
             gameView.setTileGrid(tileGrid);
+
+
+
             startArtificialMovement();
             World.getInstance().getTime().startTime();
+
             gameView.getSideContent().setRescueTime(World.getInstance().getTime().getEndTime()); //Sets Resume Time View
             startGameLoop();
         }
@@ -112,126 +139,158 @@ public class GameController implements GameEventHandler {
 
     @Override
     public void moveLeftEvent() {
-        process('L');
+        process(Direction.LEFT);
     }
 
     @Override
     public void moveRightEvent() {
-        process('R');
+        process(Direction.RIGHT);
     }
 
     @Override
     public void moveUpEvent() {
-        process('U');
+        process(Direction.UP);
     }
 
     @Override
     public void moveDownEvent() {
-        process('D');
+        process(Direction.DOWN);
     }
 
-    private void process(char command) {
-        if (command == 'D') {
-            moveAgent('D');
-        } else if (command == 'L') {
-            moveAgent('L');
-        } else if (command == 'R') {
-            moveAgent('R');
-        } else if (command == 'U') {
-            moveAgent('U');
+
+    private void process(Direction command) {
+        if (command.equals(Direction.DOWN)) {
+            moveAgent(Direction.DOWN);
+        } else if (command.equals(Direction.LEFT)) {
+            moveAgent(Direction.LEFT);
+        } else if (command.equals(Direction.RIGHT)) {
+            moveAgent(Direction.RIGHT);
+        } else if (command.equals(Direction.UP)) {
+            moveAgent(Direction.UP);
         }
     }
 
-    private void moveAgent(char direction) {
+    private void moveAgent(Direction direction){
         Agent agent = World.getInstance().getMainCharacter();
         int oldX = agent.getXPosition();
         int oldY = agent.getYPosition();
-        if(direction == 'D' ){
+        if(direction.equals(Direction.DOWN)){
             agent.moveDown();
         }
-        if(direction == 'L' ){
+        if(direction.equals(Direction.LEFT)){
             agent.moveLeft();
         }
-        if(direction == 'R' ){
+        if(direction.equals(Direction.RIGHT)){
             agent.moveRight();
         }
-        if(direction == 'U'){
+        if(direction.equals(Direction.UP)){
             agent.moveUp();
         }
         updateCreaturePosition(oldX,oldY);
         gameView.getSideContent().setHealth(agent.getHealth()); //Updates Health View
     }
 
-    //TODO: We can add different schedules for different animal types speed. Implement LATER
     private void startArtificialMovement(){
         ArrayList<Movable> movableEntities = World.getInstance().getMovableEntities();
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if(!running) {this.cancel();}
-                for(Movable entity :  movableEntities) {
-                    int oldX = ((Creature) entity).getXPosition();
-                    int oldY = ((Creature) entity).getYPosition();
-                    if (!(entity instanceof Agent)) {
-                        char dir = RandomGenerator.randomDirection();
-                        if (dir == 'D') {
-                            entity.moveDown();
+        Timeline movementLoop = new Timeline();
+        movementLoop.setCycleCount( Timeline.INDEFINITE );
+        KeyFrame kf = new KeyFrame(
+                Duration.seconds(1d/5),
+                e -> {
+                    if(!(gameLoop.getStatus() == Animation.Status.STOPPED || gameLoop.getStatus() == Animation.Status.PAUSED) )
+                        for(Movable entity :  movableEntities) {
+                            int oldX = ((Creature) entity).getXPosition();
+                            int oldY = ((Creature) entity).getYPosition();
+                            if (!(entity instanceof Agent)) {
+                                Direction dir = EntityRandomFactory.randomDirection();
+                                if (dir.equals(Direction.DOWN)) {
+                                    entity.moveDown();
+                                }
+                                if (dir.equals(Direction.LEFT)) {
+                                    entity.moveLeft();
+                                }
+                                if (dir.equals(Direction.RIGHT)) {
+                                    entity.moveRight();
+                                }
+                                if (dir.equals(Direction.UP)) {
+                                    entity.moveUp();
+                                }
+                            }
+                            updateCreaturePosition(oldX, oldY);
                         }
-                        if (dir == 'L') {
-                            entity.moveLeft();
-                        }
-                        if (dir == 'R') {
-                            entity.moveRight();
-                        }
-                        if (dir == 'U') {
-                            entity.moveUp();
-                        }
-                    }
-                    updateCreaturePosition(oldX, oldY);
-                }
-            }},0,250);
+                });
+        movementLoop.getKeyFrames().add( kf );
+        movementLoop.play();
     }
+
 
     private void startGameLoop(){
-        AnimationTimer gameLoop = new AnimationTimer() {
-            int runOnce = 1;
-            @Override
-            public void handle(long now) {
-                updateView( World.getInstance().getMovableEntities());
-                gameView.getSideContent().setTime(World.getInstance().getTime().getCurrentTime());
-                if(!running){this.stop();}
-                //Day & Night
-                if(World.getInstance().getTime().isNight()){
-                    updateNightVision();
-                    runOnce = 1;
-                }else if(World.getInstance().getTime().isDay() && runOnce == 1){
-                    runOnce++;
-                    updateDayVision();
-                }
-                //Loser & Winner
-                if(World.getInstance().getMainCharacter().isDead()){
-                    //gameView.setGameHandler(null);
-                    running = false;
-                    gameView.getGameOverSubscene().moveSubSceneLeft(900);
 
-                }else if(World.getInstance().getMainCharacter().isAlive() && World.getInstance().getTime().hasEnd()){
-                    //gameView.setGameHandler(null);
-                    running = false;
-                    gameView.getWinnerSubscene().moveSubSceneLeft(900);
-                }
-            }
-        };
-        gameLoop.start();
+        gameLoop.setCycleCount( Timeline.INDEFINITE );
+        KeyFrame kf = new KeyFrame(
+                Duration.seconds(1d / FPS),
+                new EventHandler<ActionEvent>() {
+                    boolean ranOnce = false;
+                    @Override
+                    public void handle(ActionEvent event) {
+                        updateView(World.getInstance().getMovableEntities());
+                        gameView.getSideContent().setTime(World.getInstance().getTime().getCurrentTime());
+
+
+                        //Day & Night
+                        if (World.getInstance().getTime().isNight()) {
+                            updateNightVision();
+
+                        } else if (World.getInstance().getTime().isDay() && !ranOnce) {
+                            ranOnce = !ranOnce;
+                            updateDayVision();
+                        }
+                        //Loser & Winner
+                        if (World.getInstance().getMainCharacter().isDead() ) {
+                            endBackgroundProcesses();
+                            gameView.getGameOverSubscene().moveSubSceneLeft(900);
+
+                        } else if (World.getInstance().getMainCharacter().isAlive() && World.getInstance().getTime().hasEnd()) {
+                            endBackgroundProcesses();
+                            gameView.getWinnerSubscene().moveSubSceneLeft(900);
+                        }
+                    }
+                } );
+        gameLoop.getKeyFrames().add( kf );
+        gameLoop.play();
     }
 
-    private void updateView(ArrayList<Movable> movableEntities) {
+
+    @Override
+    public void pauseEvent(){
+        pauseBackgroundProcesses();
+    }
+
+    @Override
+    public void resumeEvent(){
+        resumeBackgroundProcesses();
+    }
+
+    private void pauseBackgroundProcesses(){
+        gameLoop.pause();
+        World.getInstance().getTime().pause();
+    }
+    private void resumeBackgroundProcesses(){
+        gameLoop.play();
+        World.getInstance().getTime().resume();
+    }
+    private void endBackgroundProcesses(){
+        gameLoop.stop();
+        World.getInstance().getTime().stop();
+    }
+
+     private void updateView(ArrayList<Movable> movableEntities) {
         for(Movable entity :  movableEntities) {
-            gameView.getTileWaitingQueue().remove().setText(' ');
+            gameView.getTileWaitingQueue().remove().setImage(null);
             int x = ((Creature)entity).getXPosition();
             int y = ((Creature)entity).getYPosition();
-            char entityChar = World.getInstance().entityToChar(((Entity)entity));
-            gameView.getTileGrid()[x][y].setText(entityChar);
+            String entityUrl = World.getInstance().entityToUrl(((Entity)entity));
+            gameView.getTileGrid()[x][y].setImage(entityUrl);
             gameView.getTileWaitingQueue().add(gameView.getTileGrid()[x][y]);
         }
     }
@@ -244,11 +303,20 @@ public class GameController implements GameEventHandler {
         int visionRadius = agent.getVisionRadius();
         for(int y = 0; y < WorldYSize; y++) {
             for (int x = 0; x <WorldXSize; x++) {
-                gameView.getTileGrid()[x][y].resetColor();
+                Tile tile =gameView.getTileGrid()[x][y];
+                tile.resetColor();
                 boolean xBoundary = x <= agent.getXPosition() - visionRadius || x >= agent.getXPosition() + visionRadius;
                 boolean yBoundary = y <= agent.getYPosition() - visionRadius || y >= agent.getYPosition() + visionRadius;
                 if (xBoundary || yBoundary ) {
                     gameView.getTileGrid()[x][y].setColor(Color.BLACK);
+                }
+                if(tile.getCharacter().equals(EntityObject.ROCK.getImgUrl()) ||
+                    tile.getCharacter().equals(Lifeform.TREE.getImgUrl()) ||
+                    tile.getCharacter().equals(EntityObject.BASE.getImgUrl()) ||
+                    tile.getCharacter().equals(Lifeform.BUSH.getImgUrl()) ||
+                    tile.getCharacter().equals(Lifeform.TREE.getImgUrl())){
+                    tile.getEntity().setVisible(false);
+
                 }
             }
         }
@@ -260,7 +328,15 @@ public class GameController implements GameEventHandler {
         int WorldXSize = World.getWorld().get(0).size();
         for(int y = 0; y < WorldYSize; y++) {
             for (int x = 0; x <WorldXSize; x++) {
-                gameView.getTileGrid()[x][y].resetColor();
+                Tile tile =gameView.getTileGrid()[x][y];
+                tile.resetColor();
+                if(tile.getCharacter().equals(EntityObject.ROCK.getImgUrl()) ||
+                        tile.getCharacter().equals(Lifeform.TREE.getImgUrl()) ||
+                        tile.getCharacter().equals(EntityObject.BASE.getImgUrl()) ||
+                        tile.getCharacter().equals(Lifeform.BUSH.getImgUrl()) ||
+                        tile.getCharacter().equals(Lifeform.TREE.getImgUrl())){
+                    tile.getEntity().setVisible(true);
+                }
             }
         }
     }

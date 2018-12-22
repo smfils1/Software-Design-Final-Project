@@ -1,6 +1,7 @@
 package csc221.alg.view.menu;
 
 import javafx.animation.TranslateTransition;
+import javafx.geometry.Pos;
 import javafx.scene.SubScene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -13,16 +14,26 @@ public class ALGSubscene extends SubScene {
     private boolean isHidden;
 
     public ALGSubscene(){
-        super(new AnchorPane(),500,300);
+        this(new AnchorPane());
+    }
+    public ALGSubscene(Pane layout){
+        super(layout,500,300);
         prefHeight(300);
         prefWidth(500);
         Image newImage = new Image(BACKGROUND_IMAGE,500,300, false,true);
         BackgroundImage image = new BackgroundImage(newImage,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,null);
-        AnchorPane root2 = (AnchorPane) this.getRoot(); //Getting the Layout we set
-        root2.setBackground(new Background(image));//Adding Background to Layout
+        Pane root = (Pane) this.getRoot(); //Getting the Layout we set
+        root.setBackground(new Background(image));//Adding Background to Layout
         isHidden = true;
         setLayoutX(1024);
         setLayoutY(130);
+        if(layout instanceof StackPane){
+            root = (StackPane) this.getRoot();
+            ((StackPane) root).setAlignment(Pos.CENTER);
+        }
+
+
+
     }
 
 
@@ -51,8 +62,8 @@ public class ALGSubscene extends SubScene {
         transition.play();
     }
 
-    public AnchorPane getPane(){
-        return (AnchorPane) this.getRoot();
+    public Pane getPane(){
+        return (Pane) this.getRoot();
     }
 
 

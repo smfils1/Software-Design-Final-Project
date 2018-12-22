@@ -29,7 +29,7 @@ public class Menu {
     private Stage mainStage;
     public List<ALGButton> menuButtons;
     public List<CharacterPicker> characterList;
-    public CHARACTER choosenCHARACTER;
+    public Character choosenCHARACTER;
     private ALGSubscene helpText;
     private ALGSubscene creditsText;
 
@@ -222,7 +222,7 @@ public class Menu {
 
         box.setSpacing(35);
         characterList = new ArrayList<>();
-        for (CHARACTER CHARACTER : CHARACTER.values()) {
+        for (Character CHARACTER : Character.values()) {
             CharacterPicker characterToPick = new CharacterPicker(CHARACTER);
             characterList.add(characterToPick);
             box.getChildren().add(characterToPick);
@@ -238,6 +238,7 @@ public class Menu {
 
 
     }
+
 
     private ALGButton createButtonToStart() {
         ALGButton startButton = new ALGButton("START");

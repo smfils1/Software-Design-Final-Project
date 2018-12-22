@@ -17,7 +17,7 @@ public class World {
 
     private World() {
         world = new ArrayList<>();
-        time = new Time(20,100);
+        time = new Time(30,1000);
         movableEntities = new ArrayList<>();
         loadTerrain(Loader.map("terrain.txt"));
         loadEntities(Loader.map("entities.txt"));
@@ -52,58 +52,88 @@ public class World {
 
     public  char entityToChar(Entity entity) {
         if(entity instanceof Agent){
-            return 'A';
+            return Lifeform.AGENT.getValue();
         } else if(entity instanceof Carnivore){
             return carnivoreText(entity);
         } else if(entity instanceof Herbivore){
             return herbivoreText(entity);
         } else if(entity instanceof Rock){
-            return 'R';
+            return EntityObject.ROCK.getValue();
         } else if(entity instanceof Base){
-            return 'B';
+            return EntityObject.BASE.getValue();
         } else if(entity instanceof Bush){
-            return 'b';
+            return Lifeform.BUSH.getValue();
         } else if(entity instanceof Tree){
-            return 'T';
+            return Lifeform.BUSH.getValue();
         } else{
             return ' ';
         }
     }
 
-    public  String terrainToColor(Region region) {
-        if(region.getTerrainType() == '.'){
-            return "tan";
-        } else if(region.getTerrainType() == '~'){
-            return "blue";
+    public  String entityToUrl(Entity entity) {
+        if(entity instanceof Agent){
+            return Lifeform.AGENT.getImgUrl();
+        } else if(entity instanceof Carnivore){
+            return carnivoreImgUrl(entity);
+        } else if(entity instanceof Herbivore){
+            return herbivoreImgUrl(entity);
+        } else if(entity instanceof Rock){
+            return EntityObject.ROCK.getImgUrl();
+        } else if(entity instanceof Base){
+            return EntityObject.BASE.getImgUrl();
+        } else if(entity instanceof Bush){
+            return Lifeform.BUSH.getImgUrl();
+        } else if(entity instanceof Tree){
+            return Lifeform.BUSH.getImgUrl();
+        } else{
+            return "";
+        }
+    }
+
+    public  String terrainColor(Region region) {
+        if(region.getTerrainType() == Terrain.DESSERT.getValue()){
+            return Terrain.DESSERT.getColor();
+        } else if(region.getTerrainType() == Terrain.WATER.getValue()){
+            return Terrain.WATER.getColor();
         }else{
-            return "green";
+            return Terrain.GRASS.getColor();
         }
     }
 
     private static char herbivoreText(Entity entity) {
-        if(entity instanceof Rabbit){return 'r';}
-        else{return 'm';}
+        if(entity instanceof Rabbit){return Lifeform.RABBIT.getValue();}
+        else{return Lifeform.DEER.getValue();}
     }
 
     private static char carnivoreText(Entity entity) {
-        if(entity instanceof Lion){return 'L';}
-        else{return 'W';}
+        if(entity instanceof Lion){return Lifeform.LION.getValue();}
+        else{return Lifeform.WOLF.getValue();}
+    }
+
+    private static String herbivoreImgUrl(Entity entity) {
+        if(entity instanceof Rabbit){return Lifeform.RABBIT.getImgUrl();}
+        else{return Lifeform.DEER.getImgUrl();}
+    }
+
+    private static String carnivoreImgUrl(Entity entity) {
+        if(entity instanceof Lion){return Lifeform.LION.getImgUrl();}
+        else{return Lifeform.WOLF.getImgUrl();}
     }
 
     private Entity charToEntity(char entity, int x, int y ) {
-        if(entity == 'A'){
+        if(entity == Lifeform.AGENT.getValue()){
             return new Agent(x,y);
-        } else if(entity == 'C'){
-            return RandomGenerator.randomCarnivore(x,y);
-        } else if(entity == 'H'){
-            return RandomGenerator.randomHerbivore(x,y);
-        } else if(entity == 'R'){
-            return RandomGenerator.randomRock(x,y);
-        } else if(entity == 'B'){
+        } else if(entity == Lifeform.CARNIVORE.getValue()){
+            return EntityRandomFactory.randomCarnivore(x,y);
+        } else if(entity == Lifeform.HERBIVORE.getValue()){
+            return EntityRandomFactory.randomHerbivore(x,y);
+        } else if(entity == EntityObject.ROCK.getValue()){
+            return EntityRandomFactory.randomRock(x,y);
+        } else if(entity == EntityObject.BASE.getValue()){
             return new Base(x,y);
-        } else if(entity == 'b'){
+        } else if(entity == Lifeform.BUSH.getValue()){
             return new Bush(x,y);
-        } else if(entity == 'T'){
+        } else if(entity == Lifeform.TREE.getValue()){
             return new Tree(x,y);
         } else{
             return null;

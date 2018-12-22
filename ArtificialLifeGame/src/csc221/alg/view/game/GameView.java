@@ -2,7 +2,7 @@ package csc221.alg.view.game;
 //TODO: Game UI
 import csc221.alg.controller.GameEventHandler;
 import csc221.alg.view.menu.ALGSubscene;
-import csc221.alg.view.menu.CHARACTER;
+import csc221.alg.view.menu.Character;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -66,13 +66,13 @@ public class GameView {
         //gameStage.setResizable(false);
         gameStage.setScene(gameScene);
         createSideContent();
-
-
+        createSubscenes();
     }
 
 
-    private void createSideContent() {
+    public void createSideContent() {
         sideContent = new SideContent();
+        sideContent.setLayoutX(600);
         gamePane.getChildren().add(sideContent);
     }
 
@@ -84,21 +84,25 @@ public class GameView {
         return winnerSubscene;
     }
 
-    public void createSubscenes() {
-        gameOverSubscene = new ALGSubscene();
+    private void createSubscenes() {
+        createGameOverSubscene();
+        createWinnerSubscene();
+    }
+
+    private void createGameOverSubscene() {
+        gameOverSubscene = new ALGSubscene(new StackPane());
         gamePane.getChildren().add(gameOverSubscene);
-        winnerSubscene = new ALGSubscene();
-        gamePane.getChildren().add(winnerSubscene);
-        Label gameOverText = new Label("GAME OVER!");
-        Label winnerText = new Label("YOU SURVIVED!");
+        Label gameOverText = new Label("GAME OVER!!!");
         gameOverSubscene.getPane().getChildren().add(gameOverText);
-        winnerSubscene.getPane().getChildren().add(winnerText);
-        gameOverText.setLayoutX(85);
-        gameOverText.setLayoutY(100);
         gameOverText.setFont(Font.font("Verdena",55));
-        winnerText.setLayoutX(60);
-        winnerText.setLayoutY(100);
+    }
+    private void createWinnerSubscene() {
+        winnerSubscene = new ALGSubscene(new StackPane());
+        Label winnerText = new Label("YOU SURVIVED!");
+        gamePane.getChildren().add(winnerSubscene);
+        winnerSubscene.getPane().getChildren().add(winnerText);
         winnerText.setFont(Font.font("Verdena",55));
+
     }
 
 
@@ -156,18 +160,12 @@ public class GameView {
     }
 
     //TODO: Use character image LATER
-    private void createCharacter(CHARACTER choosenCHARACTER){
+    private void createCharacter(Character choosenCHARACTER){
         character = new ImageView(choosenCHARACTER.getUrl());
-        character.setFitWidth(50);
-        character.setFitHeight(50);
-        //TODO: Put character in correct position
-        character.setLayoutX(0);
-        character.setLayoutY(0);
-        gamePane.getChildren().add(character);
+
     }
 
-    //TODO: Look at LATER
-    public void createNewGame(CHARACTER choosenCHARACTER){//Game Window
+    public void createNewGame(Character choosenCHARACTER){//Game Window
         createCharacter(choosenCHARACTER);
         gameStage.show();
     }

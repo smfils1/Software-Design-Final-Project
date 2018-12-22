@@ -13,4 +13,6 @@ public interface GameEventHandler {
     void eatEvent();
     void hideEvent();
     void restEvent();
+    void pauseEvent();
+    void resumeEvent();
 }
