@@ -1,0 +1,15 @@
+GAME INSTRUCTIONS
+
+You are a secret agent stranded in the field and you must survive until the rescue team arrives. You have a base where
+you can rest and be somewhat protected from wild animals. You can move around using the Up/Down/Left/Right arrow keys.
+It will take more energy to move through water or the desert. You may move at night with the light from your torch,
+but you will be vulnerable to surprise attacks. You may perform the following actions to help you survive.
+Press one of the follwong keys:
+'A' = Attack. You can try to kill nearby carnivores before they kill you! Or you can kill herbivores for meat.
+'B' = Build. If you have some wood in your backpack, you can build up your base to defend from wild animals.
+'C' = Collect. You can collect berries from bushes and wood from trees, until the supply runs out.
+'E' = Eat. You can eat berries or meat from your backpack, but must wait a short while before you can eat again.
+'H' = Hide. You can hide behind a large rock to protect from wild animal attacks.
+'R' = Rest. To regain health, you can rest under a tree or at base, but must wait a while before you can rest again.
+
+Good luck!
