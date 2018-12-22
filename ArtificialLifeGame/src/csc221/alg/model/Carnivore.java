@@ -92,7 +92,8 @@ abstract class Carnivore extends Creature {
                 if( (getSize() == 'M' || getSize() == 'L')
                         && region != null
                         && region.getEntity() instanceof Agent
-                        && ((Agent)region.getEntity()).isVisible() ) {
+                        && ((Agent)region.getEntity()).isVisible()
+                        && !((Agent)region.getEntity()).isAtBase()) {
                     Agent agent = (Agent)(region.getEntity());
                     agent.decreaseHealth(3); // Each attack takes 3 hp from agent.
                     decreaseHealth(1);  // Attacking also decreases Carnivore's health by 1.

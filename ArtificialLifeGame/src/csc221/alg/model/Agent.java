@@ -200,6 +200,7 @@ public class Agent extends Creature {
             if( isBase(visionXCenter - 1, visionYCenter) || isBase(visionXCenter + 1, visionYCenter)
                     || isBase(visionXCenter, visionYCenter - 1) || isBase(visionXCenter, visionYCenter + 1) ) {
                 increaseHealth(20); // Resting at base increases health by 20 points.
+                setVisiblity(false); // Visibility will be restored in the updateHealth() method once agent moves again.
                 resting = true;
                 lastRest = now;
             } else if( isTree(visionXCenter - 1, visionYCenter) || isTree(visionXCenter + 1, visionYCenter)
@@ -213,6 +214,11 @@ public class Agent extends Creature {
 
     public boolean isResting() {
         return resting;
+    }
+
+
+    public boolean isAtBase() {
+        return !isVisible() && isResting();
     }
 
     private boolean isBase(int x, int y) { // Private helper method used by buildBase() and rest().
